@@ -26,7 +26,8 @@ public:
 
     // Initialize row INPUT pin and set default state
     for (int i = 0; i < numRows; i++) {
-      pinMode(rows[i], INPUT_PULLDOWN);
+      pinMode(rows[i], INPUT); // using 10k hardware Pulldown resistors
+      digitalWrite(rows[i], LOW);
     }
     for (int i = 0; i < numCols; i++) {
       pinMode(colls[i], OUTPUT);
