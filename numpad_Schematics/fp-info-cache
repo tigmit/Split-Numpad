@@ -1,4 +1,4 @@
-23809302280754847
+23861077004354722
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -72618,6 +72618,13 @@ QFN NoLead
 43
 29
 Package_DFN_QFN
+QFN-28-1EP_4x4mm_P0.45mm_EP2.6x2.6mm
+QFN, 28 Pin (http://www.everest-semi.com/pdf/ES8388%20DS.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
+QFN NoLead
+0
+33
+29
+Package_DFN_QFN
 QFN-28-1EP_4x5mm_P0.5mm_EP2.65x3.65mm
 QFN, 28 Pin (http://www.analog.com/media/en/technical-documentation/data-sheets/3555fe.pdf#page=32), generated with kicad-footprint-generator ipc_noLead_generator.py
 QFN NoLead
@@ -96726,9 +96733,114 @@ Varistor VF
 2
 2
 tigmitNIGHTLY
+CONV_BOB-12009
+
+
+0
+12
+12
+tigmitNIGHTLY
+CP_Elec_6.3x5.2
+SMD capacitor, aluminum electrolytic, United Chemi-Con, 6.3x5.2mm
+capacitor electrolytic
+0
+2
+2
+tigmitNIGHTLY
+DCDC-Converter
+
+
+0
+4
+4
+tigmitNIGHTLY
+Diode_SOD-123
+SOD-123
+SOD-123
+0
+2
+2
+tigmitNIGHTLY
 ESP32 Vroom Devkit V1 no holes
 
 
 0
 30
 30
+tigmitNIGHTLY
+ESP32-WROOM-32 tigmit
+Single 2.4 GHz Wi-Fi and Bluetooth combo chip https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf
+Single 2.4 GHz Wi-Fi and Bluetooth combo  chip
+0
+60
+39
+tigmitNIGHTLY
+NekoPowerModImmage
+
+
+0
+0
+0
+tigmitNIGHTLY
+PinHeader_1x04_P2.54mm_Vertical
+Through hole straight pin header, 1x04, 2.54mm pitch, single row
+Through hole pin header THT 1x04 2.54mm single row
+0
+4
+4
+tigmitNIGHTLY
+PinHeader_1x05_P2.54mm_Vertical
+Through hole straight pin header, 1x05, 2.54mm pitch, single row
+Through hole pin header THT 1x05 2.54mm single row
+0
+5
+5
+tigmitNIGHTLY
+R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal
+Resistor, Axial_DIN0204 series, Axial, Horizontal, pin pitch=7.62mm, 0.167W, length*diameter=3.6*1.6mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf
+Resistor Axial_DIN0204 series Axial Horizontal pin pitch 7.62mm 0.167W length 3.6mm diameter 1.6mm
+0
+2
+2
+tigmitNIGHTLY
+SK12D07VG4
+
+
+0
+5
+5
+tigmitNIGHTLY
+TP4056-18650
+
+
+0
+6
+6
+tigmitNIGHTLY
+battery solder pins
+
+
+0
+2
+2
+tigmitNIGHTLY
+heatsink pad
+THT pad as test Point, diameter 1.0mm, hole diameter 0.5mm
+test point THT pad
+0
+1
+1
+tigmitNIGHTLY
+hotswap socket with neopixel
+
+
+0
+6
+6
+tigmitNIGHTLY
+tigmit pushbutton
+tactile push button, 6x3.5mm, https://www.apem.com/idec-apem/en_US/PCB-switches/Tactile-Switches/MJTP-6mm-through-hole/c/MJTP_6mm_through%20hole?page=1
+PHAP3362 6mm tact sw THT
+0
+2
+2
