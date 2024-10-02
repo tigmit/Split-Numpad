@@ -1,5 +1,6 @@
 #pragma once
 #include "Model.hpp"
+#include "bmp/allBmp.hpp"
 #include "debugSettings.hpp"
 #include <Arduino.h>
 
@@ -72,9 +73,8 @@ public:
   //===========> run
   void run() override {
     Serial.println("Running StartUp");
-    delay(1000);           // do stuff
-    if (true)              // set next state on some condition
-      setNextState(pIdle); // kick off transition
+    delay(1000);         // do stuff
+    setNextState(pIdle); // kick off transition
   }
   //===========> exit
   void exit() override {
@@ -86,7 +86,7 @@ public:
 
 //***************************************************************************
 //*                                                                         *
-//*                            STATE: Idle                              *
+//*                            STATE: Idle                                  *
 //*                                                                         *
 //**************************************************************************/
 
@@ -96,14 +96,55 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.println(" -> Idle");
+    Serial.println(" Idle");
 #endif
-    dspHandler.pushExample();
+    dspHandler.setCursor(5, 10, 2);
+    dspHandler.clear();
+    dspHandler << "welcome\n to\n  NEKOPAD";
+    dspHandler.push();
+    delay(1000);
+    dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 0, 0);
+    delay(1500);
+    dspHandler.clear();
+    dspHandler.push();
   }
   //===========> run
-  void run() override {
-    Serial.println("Running Idle");
-    delay(1000); // do stuff
+  void run() override { // TODO: it works but this is so fucking ugly...
+    switch (encHandler.updateMainMenueSelect()) {
+    case 0:
+      dspHandler.clear();
+      dspHandler.pushBitmap(batteryWARNING, BatteryIconWidth, BatteryIconHeight,
+                            10, 10);
+      break;
+    case 1:
+      dspHandler.clear();
+      dspHandler.pushBitmap(battery25Percent, BatteryIconWidth,
+                            BatteryIconHeight, 10, 10);
+      break;
+    case 2:
+      dspHandler.clear();
+      dspHandler.pushBitmap(battery50Percent, BatteryIconWidth,
+                            BatteryIconHeight, 10, 10);
+      break;
+    case 3:
+      dspHandler.clear();
+      dspHandler.pushBitmap(battery75Percent, BatteryIconWidth,
+                            BatteryIconHeight, 10, 10);
+      break;
+    case 4:
+      dspHandler.clear();
+      dspHandler.pushBitmap(battery100Percent, BatteryIconWidth,
+                            BatteryIconHeight, 10, 10);
+      break;
+
+    default:
+      dspHandler.setCursor(1, 1, 1);
+      dspHandler.clear();
+      dspHandler << "fucked. out of bounds";
+      dspHandler.push();
+      break;
+    }
+    dspHandler.PushLine(0, 21, 128, false);
   }
   //===========> exit
   void exit() override {
@@ -125,7 +166,7 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-  Serial.println(" -> StateExample");
+  Serial.println(" StateExample");
 #endif
   }
   //===========> run

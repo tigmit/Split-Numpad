@@ -23,6 +23,7 @@ public:
     } else {
       Serial.println(F("SSD1306 allocation success"));
     }
+    display.clearDisplay();
   }
 
   void pushExample() {
@@ -40,6 +41,40 @@ public:
     display.display();
     delay(2000);
   }
+
+  void setCursor(int16_t x = 20, int16_t y = 20, uint8_t textSize = 1) {
+    display.setTextSize(textSize); // Normal 1:1 pixel scale
+    display.setCursor(x, y);       // start line at x,y
+    display.cp437(true);           // Use full 256 char 'Code Page 437' font
+    display.setTextColor(SSD1306_WHITE); // Draw white text
+  }
+
+  void pushBitmap(const uint8_t *bmp, const uint8_t w, const u_int8_t h,
+                  uint8_t x = 10, uint8_t y = 10, bool clear = true) {
+    // for center use
+    //(display.width() - w) / 2 for x
+    //(display.height() - h) / 2 for y
+    assert(((x + w) <= SCREEN_WIDTH) && "WARNING: BMP width out of bounds");
+    assert(((y + h) <= SCREEN_HEIGHT) && "WARNING: BMP Height out of bounds");
+    if (clear) {
+      display.clearDisplay();
+    }
+    display.drawBitmap(x, y, bmp, w, h, 1);
+    display.display();
+  }
+
+  void PushLine(uint8_t x = 0, uint8_t y = 10, uint8_t w = 128,
+                bool clear = true) {
+    if (clear) {
+      display.clearDisplay();
+    }
+    display.drawFastHLine(x, y, w, SSD1306_WHITE);
+    display.display();
+  }
+
+  template <typename T> void operator<<(T data) { display.write(data); }
+  void clear() { display.clearDisplay(); }
+  void push() { display.display(); }
 
 private:
   Adafruit_SSD1306 display{SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET};

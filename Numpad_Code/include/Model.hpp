@@ -7,9 +7,13 @@
 #pragma once
 
 #include "DisplayHandler.hpp"
+#include "EncoderHandler.hpp"
 #include "keyBoardHandler.hpp"
 // init keyboard handler
 KeyboardHandler kbdHandler;
 
 // init DispalyHandler
 DisplayHandler dspHandler;
+
+// init EncoderHandler
+EncoderHandler encHandler;

@@ -32,6 +32,8 @@ void setup() {
   kbdHandler.init();
   // init Display Handler
   dspHandler.init();
+  // init encoder Handler
+  encHandler.init();
 }
 
 void Loop0_(void *param) {

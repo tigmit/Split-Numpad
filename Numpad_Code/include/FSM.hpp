@@ -18,7 +18,7 @@ public:
     currentState->enter();
   }
   void update() {
-    delay(10); // save some processing power
+    delay(processDelay); // save some processing power
     currentState->run();
     State *next = currentState->nextState();
     if (next != currentState) {
@@ -30,4 +30,5 @@ public:
 
 private:
   State *currentState;
+  static constexpr uint8_t processDelay{10};
 };
