@@ -5,7 +5,8 @@
  * creator : @tigmit Licence : opensource
  */
 
-#include "keyBoardHandler.hpp"
+#include "FSM.hpp"
+#include "Model.hpp"
 #include <Arduino.h>
 
 // setup Task handles
@@ -14,11 +15,10 @@ TaskHandle_t Loop1; // loop running on core 1 (default core)
 void Loop1_(void *param);
 void Loop0_(void *param);
 
-// init keyboard handler
-KeyboardHandler kbdHandler;
+FSM fsm; // start with default state -> pStartUp
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(serialBaudRate);
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
@@ -28,20 +28,25 @@ void setup() {
 
   //______________________ initialize dependencies
 
+  // init keyboard Handler
   kbdHandler.init();
+  // init Display Handler
+  dspHandler.init();
+  // init encoder Handler
+  encHandler.init();
+  // init rgbHandler
+  rgbHandler.init();
 }
 
 void Loop0_(void *param) {
   while (true) {
-    delay(1); // TODO: this core will handle display tasks. we need to do
-              // something in here otherwise the MCU will crash...
-              // therefore. delay a random ammount.
+    fsm.update();
   }
 }
 
 void Loop1_(void *param) { // explicitly for scanning the btn matrix
   // setup section for loop1:
-  //__________________RUN Loop1 (default core)
+  //______________________RUN Loop1 (default core)
   while (true) {
     kbdHandler.updateKeyMatrix();
   }
