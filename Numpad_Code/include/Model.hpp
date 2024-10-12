@@ -8,12 +8,21 @@
 
 #include "DisplayHandler.hpp"
 #include "EncoderHandler.hpp"
+#include "RgbHandler.hpp"
 #include "keyBoardHandler.hpp"
-// init keyboard handler
+
+namespace Model {
+
+// declare keyboard handler
 KeyboardHandler kbdHandler;
 
-// init DispalyHandler
+// declare DispalyHandler
 DisplayHandler dspHandler;
 
-// init EncoderHandler
+// declare EncoderHandler
 EncoderHandler encHandler;
+
+// declare RgbHandler
+RgbHandler rgbHandler;
+
+} // namespace Model

@@ -4,6 +4,7 @@
 #include "debugSettings.hpp"
 #include <Arduino.h>
 
+using namespace Model;
 //***************************************************************************
 //*                                                                         *
 //*                           BASE STATE Interface                          *
@@ -48,12 +49,11 @@ protected:
 
 State *pStartUp;
 State *pIdle; // -0
+// State *pStateExample; // template for adding new states
 
 static constexpr u_int8_t numMainStates{2};
 
 State **mainFsmSelectPointers[numMainStates] = {&pIdle, &pIdle};
-
-// State *pStateExample; // template for adding new states
 
 //***************************************************************************
 //*                                                                         *
@@ -98,6 +98,8 @@ public:
 #ifdef FSM_PRINTS_ENABLED
     Serial.println(" Idle");
 #endif
+    rgbHandler.setBrightnes(0x0F);
+    rgbHandler.setConstColor(CRGB::ForestGreen);
     dspHandler.setCursor(5, 10, 2);
     dspHandler.clear();
     dspHandler << "welcome\n to\n  NEKOPAD";

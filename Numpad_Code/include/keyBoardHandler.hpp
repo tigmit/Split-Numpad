@@ -12,7 +12,7 @@
 #include "layout.hpp"
 #include <BleKeyboard.h>
 
-BleKeyboard kbd("tigmit_Numpad", "tigmit", 100);
+BleKeyboard kbd("NekoPad", "tigmit", 100);
 class KeyboardHandler {
 public:
   KeyboardHandler() = default;
@@ -27,18 +27,14 @@ public:
     // Initialize row INPUT pin and set default state
     for (int i = 0; i < numRows; i++) {
       pinMode(rows[i], INPUT); // using 10k hardware Pulldown resistors
-      digitalWrite(rows[i], LOW);
     }
     for (int i = 0; i < numCols; i++) {
       pinMode(colls[i], OUTPUT);
+      digitalWrite(colls[i], LOW);
     }
 
     kbd.begin();
     Serial.println("Keypad initialized wait for BLE Connect.");
-
-    // setup BLE connection indicator LED
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, LOW);
   }
 
   /**

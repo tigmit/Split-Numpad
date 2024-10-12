@@ -18,7 +18,7 @@ void Loop0_(void *param);
 FSM fsm; // start with default state -> pStartUp
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(serialBaudRate);
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
@@ -34,6 +34,8 @@ void setup() {
   dspHandler.init();
   // init encoder Handler
   encHandler.init();
+  // init rgbHandler
+  rgbHandler.init();
 }
 
 void Loop0_(void *param) {
@@ -44,7 +46,7 @@ void Loop0_(void *param) {
 
 void Loop1_(void *param) { // explicitly for scanning the btn matrix
   // setup section for loop1:
-  //__________________RUN Loop1 (default core)
+  //______________________RUN Loop1 (default core)
   while (true) {
     kbdHandler.updateKeyMatrix();
   }

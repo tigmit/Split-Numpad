@@ -8,17 +8,20 @@
 #pragma once
 #include <Arduino.h>
 
-// Defines for keymatrix:
-static constexpr uint8_t row0{26}; // tbd
-static constexpr uint8_t row1{25}; // tbd
-static constexpr uint8_t row2{33}; // tbd
-static constexpr uint8_t row3{32}; // tbd
-static constexpr uint8_t row4{35}; // tbd
+// baudrate Speed
+static constexpr unsigned long serialBaudRate = 115200;
 
-static constexpr uint8_t coll0{27}; // tbd
-static constexpr uint8_t coll1{14}; // tbd
-static constexpr uint8_t coll2{12}; // tbd
-static constexpr uint8_t coll3{13}; // tbd
+// Defines for keymatrix:
+static constexpr uint8_t row0{34}; // input only pins
+static constexpr uint8_t row1{35}; // input only pins
+static constexpr uint8_t row2{32};
+static constexpr uint8_t row3{33};
+static constexpr uint8_t row4{25};
+
+static constexpr uint8_t coll0{26};
+static constexpr uint8_t coll1{27};
+static constexpr uint8_t coll2{14};
+static constexpr uint8_t coll3{12};
 
 // Matrix dimentions
 static constexpr uint8_t numRows{5};
@@ -41,10 +44,11 @@ static constexpr int encDT{4};   // DT ENCODER
 static constexpr int encBTN{15}; // encoder button
 
 // LED defines
-// TBD
+static constexpr uint8_t numLeds{17};
+static constexpr uint8_t LedControllPin{19};
 
 // battery is charging indicator
-// TBD
+static constexpr uint8_t batteryChargeSense{5};
 
 // reading the battery voltage through 33k / 100k voltage divider
-// TBD
+static constexpr uint8_t batteryVoltage{13};
