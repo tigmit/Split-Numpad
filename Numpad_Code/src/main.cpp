@@ -39,6 +39,7 @@ void setup() {
 }
 
 void Loop0_(void *param) {
+  fsm.startup();
   while (true) {
     fsm.update();
   }

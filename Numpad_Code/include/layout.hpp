@@ -28,6 +28,15 @@ uint8_t layout1[numLayers][numRows][numCols]{
 
 bool pressed[numLayers][numRows][numCols] = {OFF};
 
+constexpr uint8_t rgbNC{80}; // out of array
+uint8_t rgbLayout[numRows][numCols]{
+    {0,      1,  2,     3},
+    {4,      5,  6, rgbNC},
+    {7,      8,  9,    10},
+    {11,    12, 13, rgbNC},
+    {14, rgbNC, 15,    16}
+};
+
 /*
 NOTE: to add more layers. use this template and increase the layercount
 the pad is using a 5X4 keymatrix. 

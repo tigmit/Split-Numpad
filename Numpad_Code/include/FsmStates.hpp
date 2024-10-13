@@ -98,8 +98,7 @@ public:
 #ifdef FSM_PRINTS_ENABLED
     Serial.println(" Idle");
 #endif
-    rgbHandler.setBrightnes(0x0F);
-    rgbHandler.setConstColor(CRGB::ForestGreen);
+    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
     dspHandler.setCursor(5, 10, 2);
     dspHandler.clear();
     dspHandler << "welcome\n to\n  NEKOPAD";
