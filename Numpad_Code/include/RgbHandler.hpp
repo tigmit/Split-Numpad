@@ -111,7 +111,7 @@ private:
   // __attribute ((packed)) wont work here because i want to store CRGB
   struct rgbConfig {
     bool rgbOn = true;
-    uint8_t currentBrightness = 15;
+    uint8_t currentBrightness = 0xF;
     CRGB currentRGBValue = CRGB::Aqua;
     uint8_t rVal = currentRGBValue[0];
     uint8_t gVal = currentRGBValue[1];
@@ -193,15 +193,24 @@ public:
     currentConfig.rgbConfig_.rgbOn = true;
   }
 
-  // void pushSingleRGB(int8_t row, int8_t coll, CRGB color = CRGB::Black) {
-  //   if (color != CRGB::Black) {
-  //     leds[rgbLayout[row][coll]] = currentConfig.rgbConfig_.currentRGBValue;
-  //   } else {
-  //     leds[rgbLayout[row][coll]] = color;
-  //   }
-  //   FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
-  //   FastLED.show();
-  // }
+  void pushSingleRGB(int8_t row, int8_t coll, CRGB color = CRGB::Black) {
+    if (rgbLayout[row][coll] == rgbNC) {
+      Serial.println("WARNING : pushSingleRGB() LED NOT CONNECTED IN MATRIX");
+      Serial.print("Row : ");
+      Serial.print(row);
+      Serial.print(" | col : ");
+      Serial.println(coll);
+      Serial.println("no further action. NO LEDs were set");
+      return;
+    } else if (color != CRGB::Black) {
+      leds[rgbLayout[row][coll]] = color;
+    } else {
+      // providing no color value will resort to the config value
+      leds[rgbLayout[row][coll]] = currentConfig.rgbConfig_.currentRGBValue;
+    }
+    FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
+    FastLED.show();
+  }
 
   bool rgbIsOn() const { return currentConfig.rgbConfig_.rgbOn; }
 

@@ -14,9 +14,10 @@
 class FSM {
 public:
   // start statemachine with an initial state
-  FSM(State *initialState = pStartUp) : currentState(initialState) {
-    currentState->enter();
-  }
+  FSM(State *initialState = pStartUp) : currentState(initialState) {}
+
+  void startup() { currentState->enter(); }
+
   void update() {
     delay(processDelay); // save some processing power
     currentState->run();
