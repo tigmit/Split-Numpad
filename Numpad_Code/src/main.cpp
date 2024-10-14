@@ -20,12 +20,6 @@ FSM fsm; // start with default state -> pStartUp
 void setup() {
   Serial.begin(serialBaudRate);
 
-  // creating loop on core 1 (default core)
-  xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
-  // creating loop on core 0
-  xTaskCreatePinnedToCore(Loop1_, "Loop1", 10000, NULL, 1, &Loop1, 1);
-  Serial.println("cores initialized");
-
   //______________________ initialize dependencies
 
   // init keyboard Handler
@@ -36,6 +30,12 @@ void setup() {
   encHandler.init();
   // init rgbHandler
   rgbHandler.init();
+
+  // creating loop on core 1 (default core)
+  xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
+  // creating loop on core 0
+  xTaskCreatePinnedToCore(Loop1_, "Loop1", 10000, NULL, 1, &Loop1, 1);
+  Serial.println("cores initialized");
 }
 
 void Loop0_(void *param) {

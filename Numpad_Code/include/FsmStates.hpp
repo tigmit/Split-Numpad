@@ -57,7 +57,7 @@ State **mainFsmSelectPointers[numMainStates] = {&pIdle, &pIdle};
 
 //***************************************************************************
 //*                                                                         *
-//*                            STATE: StartUp                              *
+//*                            STATE: StartUp                               *
 //*                                                                         *
 //**************************************************************************/
 
@@ -67,8 +67,18 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.println(" -> StartUp");
+    Serial.println("Boot -> StartUp");
 #endif
+    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
+    dspHandler.setCursor(5, 10, 2);
+    dspHandler.clear();
+    dspHandler << "welcome\n to\n  NEKOPAD :3";
+    dspHandler.push();
+    delay(1000);
+    dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 20, 0);
+    delay(1500);
+    dspHandler.clear();
+    dspHandler.push();
   }
   //===========> run
   void run() override {
@@ -79,7 +89,7 @@ public:
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.print(" StartUp ->");
+    Serial.print("StartUp -> ");
 #endif
   }
 } stateExample(pStartUp); // instanciate and pass stateHandle
@@ -96,18 +106,8 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.println(" Idle");
+    Serial.println("Idle");
 #endif
-    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
-    dspHandler.setCursor(5, 10, 2);
-    dspHandler.clear();
-    dspHandler << "welcome\n to\n  NEKOPAD";
-    dspHandler.push();
-    delay(1000);
-    dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 0, 0);
-    delay(1500);
-    dspHandler.clear();
-    dspHandler.push();
   }
   //===========> run
   void run() override { // TODO: it works but this is so fucking ugly...
@@ -150,7 +150,7 @@ public:
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.print(" Idle ->");
+    Serial.print("Idle -> ");
 #endif
   }
 } Idle(pIdle); // instanciate and pass stateHandle
@@ -167,7 +167,7 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-  Serial.println(" StateExample");
+  Serial.println("StateExample");
 #endif
   }
   //===========> run
@@ -180,7 +180,7 @@ public:
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-  Serial.print(" StateExample ->");
+  Serial.print("StateExample -> ");
 #endif
   }
 } stateExample(pStateExample); //instanciate and pass stateHandle
