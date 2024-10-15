@@ -30,6 +30,8 @@ void setup() {
   encHandler.init();
   // init rgbHandler
   rgbHandler.init();
+  // init batteryHandler
+  batteryHandler.init();
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
