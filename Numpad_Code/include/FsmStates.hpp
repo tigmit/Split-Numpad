@@ -57,7 +57,7 @@ State **mainFsmSelectPointers[numMainStates] = {&pIdle, &pIdle};
 
 //***************************************************************************
 //*                                                                         *
-//*                            STATE: StartUp                              *
+//*                            STATE: StartUp                               *
 //*                                                                         *
 //**************************************************************************/
 
@@ -67,8 +67,18 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.println(" -> StartUp");
+    Serial.println("Boot -> StartUp");
 #endif
+    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
+    dspHandler.setCursor(5, 10, 2);
+    dspHandler.clear();
+    dspHandler << "welcome\n to\n  NEKOPAD :3";
+    dspHandler.push();
+    delay(1000);
+    dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 20, 0);
+    delay(1500);
+    dspHandler.clear();
+    dspHandler.push();
   }
   //===========> run
   void run() override {
@@ -79,7 +89,7 @@ public:
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.print(" StartUp ->");
+    Serial.print("StartUp -> ");
 #endif
   }
 } stateExample(pStartUp); // instanciate and pass stateHandle
@@ -96,63 +106,45 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.println(" Idle");
+    Serial.println("Idle");
+    resetIcons();
+    dspHandler.clear(true);
 #endif
-    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
-    dspHandler.setCursor(5, 10, 2);
-    dspHandler.clear();
-    dspHandler << "welcome\n to\n  NEKOPAD";
-    dspHandler.push();
-    delay(1000);
-    dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 0, 0);
-    delay(1500);
-    dspHandler.clear();
-    dspHandler.push();
   }
   //===========> run
-  void run() override { // TODO: it works but this is so fucking ugly...
-    switch (encHandler.updateMainMenueSelect()) {
-    case 0:
-      dspHandler.clear();
-      dspHandler.pushBitmap(batteryWARNING, BatteryIconWidth, BatteryIconHeight,
-                            10, 10);
-      break;
-    case 1:
-      dspHandler.clear();
-      dspHandler.pushBitmap(battery25Percent, BatteryIconWidth,
-                            BatteryIconHeight, 10, 10);
-      break;
-    case 2:
-      dspHandler.clear();
-      dspHandler.pushBitmap(battery50Percent, BatteryIconWidth,
-                            BatteryIconHeight, 10, 10);
-      break;
-    case 3:
-      dspHandler.clear();
-      dspHandler.pushBitmap(battery75Percent, BatteryIconWidth,
-                            BatteryIconHeight, 10, 10);
-      break;
-    case 4:
-      dspHandler.clear();
-      dspHandler.pushBitmap(battery100Percent, BatteryIconWidth,
-                            BatteryIconHeight, 10, 10);
-      break;
-
-    default:
-      dspHandler.setCursor(1, 1, 1);
-      dspHandler.clear();
-      dspHandler << "fucked. out of bounds";
-      dspHandler.push();
-      break;
-    }
+  void run() override {
+    updateBattery();
     dspHandler.PushLine(0, 21, 128, false);
+
+    if (firstRun) {
+      firstRun = false;
+    }
   }
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.print(" Idle ->");
+    Serial.print("Idle -> ");
 #endif
   }
+
+private:
+  //===========> State Vareables
+
+  bool firstRun = true;
+
+  void updateBattery(u_int8_t x = 10, uint8_t y = 10) {
+    if (batteryHandler.updateBateryHandler() || firstRun) {
+      dspHandler.pushBitmap(batteryStates[batteryHandler.getChargeState()],
+                            BatteryIconWidth, BatteryIconHeight, x, y, true);
+      if (batteryHandler.isCharging()) {
+        dspHandler.pushBitmap(batteryCharging, BatteryChargingIconWidth,
+                              BatteryChargingIconHeight, x + BatteryIconWidth,
+                              y, false);
+      }
+    }
+  }
+
+  void resetIcons() { firstRun = true; }
 } Idle(pIdle); // instanciate and pass stateHandle
 
 //***************************************************************************
@@ -167,7 +159,7 @@ public:
   //===========> enter
   void enter() override {
 #ifdef FSM_PRINTS_ENABLED
-  Serial.println(" StateExample");
+  Serial.println("StateExample");
 #endif
   }
   //===========> run
@@ -180,7 +172,7 @@ public:
   //===========> exit
   void exit() override {
 #ifdef FSM_PRINTS_ENABLED
-  Serial.print(" StateExample ->");
+  Serial.print("StateExample -> ");
 #endif
   }
 } stateExample(pStateExample); //instanciate and pass stateHandle

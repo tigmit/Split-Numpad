@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include "BatteryHandler.hpp"
 #include "DisplayHandler.hpp"
 #include "EncoderHandler.hpp"
 #include "RgbHandler.hpp"
@@ -24,5 +25,8 @@ EncoderHandler encHandler;
 
 // declare RgbHandler
 RgbHandler rgbHandler;
+
+// declare BatteryHandler
+BatteryHandler batteryHandler;
 
 } // namespace Model
