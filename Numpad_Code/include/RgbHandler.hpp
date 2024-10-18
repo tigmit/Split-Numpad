@@ -111,7 +111,7 @@ private:
   // __attribute ((packed)) wont work here because i want to store CRGB
   struct rgbConfig {
     bool rgbOn = true;
-    uint8_t currentBrightness = 0xF;
+    uint8_t currentBrightness = 0xFF;
     CRGB currentRGBValue = CRGB::Aqua;
     uint8_t rVal = currentRGBValue[0];
     uint8_t gVal = currentRGBValue[1];

@@ -11,4 +11,5 @@
 #pragma once
 
 #include "batteryIcons.hpp"
+#include "bluetoothIcons.hpp"
 #include "catBootScreen.hpp"

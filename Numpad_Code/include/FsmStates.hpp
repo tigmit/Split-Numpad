@@ -72,18 +72,17 @@ public:
     rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
     dspHandler.setCursor(5, 10, 2);
     dspHandler.clear();
-    dspHandler << "welcome\n to\n  NEKOPAD :3";
+    dspHandler << "welcome\n to\n  NEKOPAD";
     dspHandler.push();
     delay(1000);
     dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 20, 0);
-    delay(1500);
+    delay(2000);
     dspHandler.clear();
     dspHandler.push();
   }
   //===========> run
   void run() override {
     Serial.println("Running StartUp");
-    delay(1000);         // do stuff
     setNextState(pIdle); // kick off transition
   }
   //===========> exit
@@ -113,11 +112,12 @@ public:
   }
   //===========> run
   void run() override {
+    updateBLE();
     updateBattery();
     dspHandler.PushLine(0, 21, 128, false);
 
-    if (firstRun) {
-      firstRun = false;
+    if (updateScreen) {
+      updateScreen = false;
     }
   }
   //===========> exit
@@ -130,21 +130,33 @@ public:
 private:
   //===========> State Vareables
 
-  bool firstRun = true;
+  bool updateScreen = true;
+
+  void updateBLE(u_int8_t x = 50, uint8_t y = 10) {
+    if (kbdHandler.ConnectionStatusChanged() || updateScreen) {
+      dspHandler.pushBitmap(bleConnectIcons[kbdHandler.getConnectionStatus()],
+                            bleConnectIconWidth, bleConnectIconHeight, x, y,
+                            true);
+    }
+  }
 
   void updateBattery(u_int8_t x = 10, uint8_t y = 10) {
-    if (batteryHandler.updateBateryHandler() || firstRun) {
+    if (batteryHandler.updateBateryHandler() || updateScreen) {
       dspHandler.pushBitmap(batteryStates[batteryHandler.getChargeState()],
                             BatteryIconWidth, BatteryIconHeight, x, y, true);
       if (batteryHandler.isCharging()) {
         dspHandler.pushBitmap(batteryCharging, BatteryChargingIconWidth,
                               BatteryChargingIconHeight, x + BatteryIconWidth,
-                              y, false);
+                              y, true);
+      } else {
+        dspHandler.clearSection(x + BatteryIconWidth, y,
+                                BatteryChargingIconWidth,
+                                BatteryChargingIconHeight);
       }
     }
   }
 
-  void resetIcons() { firstRun = true; }
+  void resetIcons() { updateScreen = true; }
 } Idle(pIdle); // instanciate and pass stateHandle
 
 //***************************************************************************

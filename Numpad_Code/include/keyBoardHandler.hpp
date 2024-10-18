@@ -95,9 +95,19 @@ public:
 
   bool getKeyPressToggle() const { return keyPressToggle; }
 
+  uint8_t ConnectionStatusChanged() {
+    if (kbd.isConnected() != connectionStatus) {
+      connectionStatus = kbd.isConnected();
+      return 1;
+    }
+    return 0;
+  }
+  bool getConnectionStatus() { return connectionStatus; }
+
 private:
   bool keyPressToggle = false;
   uint32_t outputSetDelay = 100; // µSeconds
+  bool connectionStatus = false;
 
   // NOTE: once i introduce Layers this is used to toggle these layers
   int layerIdx = 0;

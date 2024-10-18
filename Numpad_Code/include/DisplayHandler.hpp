@@ -57,7 +57,7 @@ public:
     assert(((x + w) <= SCREEN_WIDTH) && "WARNING: BMP width out of bounds");
     assert(((y + h) <= SCREEN_HEIGHT) && "WARNING: BMP Height out of bounds");
     if (clear) {
-      display.clearDisplay();
+      clearSection(x, y, w, h);
     }
     display.drawBitmap(x, y, bmp, w, h, 1);
     display.display();
@@ -69,6 +69,11 @@ public:
       display.clearDisplay();
     }
     display.drawFastHLine(x, y, w, SSD1306_WHITE);
+    display.display();
+  }
+
+  void clearSection(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+    display.fillRect(x, y, w, h, 0);
     display.display();
   }
 
