@@ -48,12 +48,13 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 
 State *pStartUp;
-State *pIdle; // -0
+State *pIdle;        // -0
+State *pLedControll; // -1
 // State *pStateExample; // template for adding new states
 
 static constexpr u_int8_t numMainStates{2};
 
-State **mainFsmSelectPointers[numMainStates] = {&pIdle, &pIdle};
+State **mainFsmSelectPointers[numMainStates] = {&pIdle, &pLedControll};
 
 //***************************************************************************
 //*                                                                         *
@@ -69,14 +70,13 @@ public:
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("Boot -> StartUp");
 #endif
-    rgbHandler.pushSingleRGB(0, 0, CRGB::Green);
+    dspHandler.clear(true);
     dspHandler.setCursor(5, 10, 2);
-    dspHandler.clear();
     dspHandler << "welcome\n to\n  NEKOPAD";
     dspHandler.push();
     delay(1000);
     dspHandler.pushBitmap(testCatFlipOFF, LOGO_WIDTH, LOGO_HEIGHT, 20, 0);
-    delay(2000);
+    rgbHandler.startupSequence();
     dspHandler.clear();
     dspHandler.push();
   }
@@ -116,7 +116,12 @@ public:
     updateBattery();
     dspHandler.PushLine(0, 21, 128, false);
 
-    if (updateScreen) {
+    if (encHandler.EncButtonPressed()) {
+      // switch to next state
+      setNextState(pLedControll);
+    }
+
+    if (updateScreen) { // entering the state for the first time
       updateScreen = false;
     }
   }
@@ -137,6 +142,9 @@ private:
       dspHandler.pushBitmap(bleConnectIcons[kbdHandler.getConnectionStatus()],
                             bleConnectIconWidth, bleConnectIconHeight, x, y,
                             true);
+
+      rgbHandler.pushRow(
+          0, rgbHandler.bleRGBIndicator[kbdHandler.getConnectionStatus()]);
     }
   }
 
@@ -148,16 +156,54 @@ private:
         dspHandler.pushBitmap(batteryCharging, BatteryChargingIconWidth,
                               BatteryChargingIconHeight, x + BatteryIconWidth,
                               y, true);
+
+        rgbHandler.pushRow(1, CRGB::Blue);
       } else {
         dspHandler.clearSection(x + BatteryIconWidth, y,
                                 BatteryChargingIconWidth,
                                 BatteryChargingIconHeight);
+        rgbHandler.pushRow(
+            1, rgbHandler.batteryRGBIndicator[batteryHandler.getChargeState()]);
       }
     }
   }
-
   void resetIcons() { updateScreen = true; }
 } Idle(pIdle); // instanciate and pass stateHandle
+
+//***************************************************************************
+//*                                                                         *
+//*                            STATE: LedControll                           *
+//*                                                                         *
+//**************************************************************************/
+
+class LedControll : public State {
+public:
+  LedControll(State *&stateHandle) { stateHandle = this; }
+  //===========> enter
+  void enter() override {
+#ifdef FSM_PRINTS_ENABLED
+    Serial.println("LedControll");
+#endif
+
+    dspHandler.setCursor(5, 10, 2);
+    dspHandler.clear(true);
+    dspHandler << "HELLo LEDctrl";
+    dspHandler.push();
+  }
+  //===========> run
+  void run() override {
+    if (encHandler.EncButtonPressed()) {
+      // switch to next state
+      setNextState(pIdle);
+    }
+  }
+  //===========> exit
+  void exit() override {
+#ifdef FSM_PRINTS_ENABLED
+    Serial.print("LedControll -> ");
+#endif
+  }
+} ledControll(pLedControll); // instanciate and pass stateHandle
 
 //***************************************************************************
 //*                                                                         *

@@ -78,6 +78,7 @@ public:
   }
 
   template <typename T> void operator<<(T data) { display.write(data); }
+
   void clear(bool push = false) {
     display.clearDisplay();
     if (push) {
