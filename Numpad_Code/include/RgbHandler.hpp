@@ -111,7 +111,7 @@ private:
   // __attribute ((packed)) wont work here because i want to store CRGB
   struct rgbConfig {
     bool rgbOn = true;
-    uint8_t currentBrightness = 0xF;
+    uint8_t currentBrightness = 0xFF;
     CRGB currentRGBValue = CRGB::Aqua;
     uint8_t rVal = currentRGBValue[0];
     uint8_t gVal = currentRGBValue[1];
@@ -156,12 +156,12 @@ public:
     FastLED.show();
   }
 
-  void startupSequence() {
+  void startupSequence(uint32_t wait = 60) {
     FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
     for (int i = 0; i < numLeds; i++) {
-      leds[i] = CRGB::Purple;
+      leds[i] = CRGB::Orange;
       FastLED.show();
-      delay(12); // boot animation time between leds
+      delay(wait); // boot animation time between leds
     }
     if (currentConfig.rgbConfig_.rgbOn) {
       setConstColor(currentConfig.rgbConfig_.currentRGBValue);
@@ -212,6 +212,25 @@ public:
     FastLED.show();
   }
 
+  void pushRow(int8_t row, CRGB color = CRGB::Black) {
+    if (row > 4) {
+      Serial.println("row must be between 0 and 4");
+      return;
+    }
+    if (color != CRGB::Black) {
+      for (uint8_t i = 0; i < 4; i++) {
+        leds[rgbLayout[row][i]] = color;
+      }
+    } else {
+      // providing no color value will resort to the config value
+      for (uint8_t i = 0; i < 4; i++) {
+        leds[rgbLayout[row][i]] = currentConfig.rgbConfig_.currentRGBValue;
+      }
+    }
+    FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
+    FastLED.show();
+  }
+
   bool rgbIsOn() const { return currentConfig.rgbConfig_.rgbOn; }
 
   uint8_t &getRval() { return currentConfig.rgbConfig_.rVal; }
@@ -223,6 +242,10 @@ public:
 
   uint8_t getMaxRgbBrightness() const { return maxRgbBrightness; }
   Config &getCurrentConfig() { return currentConfig; }
+
+  CRGB bleRGBIndicator[2]{CRGB::Red, CRGB::Blue};
+  CRGB batteryRGBIndicator[5]{CRGB::Red, CRGB::Orange, CRGB::Yellow,
+                              CRGB::GreenYellow, CRGB::Green};
 
 private:
   // Max brightness for white Whithout display flickler

@@ -83,10 +83,12 @@ private:
     soc = 100.0 - ((voltage * (-1) + upperVoltage) / rate);
     alert = (soc < 20.0); // if soc below 20% please charge
 
+#ifdef SOC_PRINT
     Serial.print("Raw: ");
     Serial.print(average);
     Serial.print("  SOC: ");
     Serial.println(soc);
+#endif
   }
 
   void calculateChargeState() {
